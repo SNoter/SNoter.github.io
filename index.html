@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <script src="scripts/jquery.js"></script>
+
+        <link rel="stylesheet" href="./styles/styles.css"/>
+    </head>
+    <body>
+        <header>
+            <ul>
+                <li><a href="javascript:getEvents('-createdAt')">Newest</a></li>
+                <li><a href="javascript:getEvents('-updatedAt,-createdAt')">Updated</a></li>
+                <li><a href="javascript:getEvents('-important,-createdAt')">Important</a></li>
+                <li><a href="javascript:getEvents('createdAt')">Oldest</a></li>
+            </ul>
+        </header>
+        <div id="wrapper">
+            <div id="events"></div>
+            <div id="controls">
+                <input type="text" id="newTitle" placeholder="Title"/>
+                <textarea id="newContent" placeholder="Content"></textarea>
+                <button id="newEvent" class="button">Add new note</button>
+                <button id="toggleEditBtn" class="button">Toggle edit</button>
+                <img src="ajax-loader.gif" id="loader-gif"/>
+            </div>
+        </div>
+
+        <div id="pageOptions">
+            <img src="images/gear.png" alt="" id="changePageBg"/>
+        </div>
+
+        <script src="scripts/script.js"></script>
+    </body>
+</html>
