@@ -6,63 +6,56 @@ $('#toggleEditBtn').on('click', function(){
     } else {
         $('section a').css("display", "none");
     }
-});
+}).hide();
 
-
-$("#changePageBg").on('click', function(){
-    var newBg =  prompt("Enter URL for the background:");
-
-
-
-    if (newBg == "" || newBg.length < 15){
-        newBg = ('#D5D5D5');
-        $('body').css("background", newBg);
+$("#changeThemeBtn").on("click", function(){
+    if (localStorage.getItem("theme") == 'dark'){
+        localStorage.setItem("theme", "light");
+        switchThemes();
     } else {
-        newBg = "url('" + newBg +  '\') no-repeat center center fixed';
+        localStorage.setItem("theme", "dark");
+        switchThemes();
     }
-
-    $.ajax({
-        method: 'PUT',
-        async:false,
-        url: 'https://api.parse.com/1/classes/Page/Z4Ud4Beygu',
-        data: JSON.stringify(
-            {
-                'background': newBg
-            }
-        ),
-        contentType: "application/json",
-        success: function(){
-            changeBackground(newBg)
-        },
-        error: databaseError
-    });
 });
 
-$('#toggleEditBtn').hide();
-
-function changeBackground(path){
-    $("body")
-        .css("background", path)
-        .css("-webkit-background-size", "cover")
-        .css("-moz-background-size", "cover")
-        .css("-o-background-size", "cover")
-        .css("background-size", "cover");
+function switchThemes(){
+    if (localStorage.getItem("theme") == 'dark'){
+        loadDarkTheme();
+    } else{
+        loadLightTheme();
+    }
 }
 
-function getBackground(){
-    $.ajax({
-        method: "GET",
-        url: encodeURI("https://api.parse.com/1/classes/Page/Z4Ud4Beygu"),
-        success: function(data){
-                changeBackground(data.background);
-        },
-        error: databaseError
-    });
+function loadLightTheme(){
+    $("header").css("background", "#FFF").css("box-shadow", "0 1px 2px #aaa");
+    $("body").css("background", "#D5D5D5");
+    $(".event").css("cssText", "background:#FFFFFF !important").css("box-shadow", "0 1px 2px #aaa");
+    $(".event .title").css("color", "#61A516");
+    $(".event textarea").css("color", "#000000");
+    $("#newTitle").css("background", "#FFFFFF").css("box-shadow", "0 1px 2px #aaa");
+    $("#newContent").css("background", "#FFFFFF").css("box-shadow", "0 1px 2px #aaa");
+    $("#newEvent").css("background", "#FFFFFF").css("box-shadow", "0 1px 2px #aaa");
+    localStorage.setItem("theme", "light");
 }
+
+function loadDarkTheme(){
+    $("header").css("background", "#1D1D1D").css("box-shadow", "0 1px 2px #000");
+    $("body").css("background", "#252525");
+    $(".event").css("cssText", "background:#333333 !important").css("box-shadow", "0 1px 2px #000");
+    $(".event .title").css("color", "#22AADD");
+    $(".event textarea").css("color", "#FFFFFF");
+    $("#newTitle").css("background", "#333333").css("box-shadow", "0 1px 2px #000");
+    $("#newContent").css("background", "#333333").css("box-shadow", "0 1px 2px #000");
+    $("#newEvent").css("background", "#333333").css("box-shadow", "0 1px 2px #000");
+    localStorage.setItem("theme", "dark");
+}
+
+
+switchThemes();
 
 function eventTemplate(item){
     res = "" +
-        "<section id='" + item.objectId +"' class='event' style='background:" + (item.important == true ? "#FFF6BB!important": (item.color + '!important' )) + "'>" +
+        "<section id='" + item.objectId +"' class='event''>" +
         "<h3 class='title'>" +  item.title + "</h3>" +
         "<textarea class='eventContent' id='content" + item.objectId + "'>" + item.content + "</textarea>" +
         "<a href=\"javascript:editEvent('" + item.objectId + "');\">Save</a> " +
@@ -74,8 +67,6 @@ function eventTemplate(item){
             res +="<a href=\"javascript:toggleImportant('" + item.objectId + "', true);\">Mark as Important</a>";
         }
 
-    res += " <a href=\"javascript:pickColor('" + item.objectId + "');\">Pick Color<input type='color' style='position:absolute;left:-9999px;top:-9999px;' id='colorPick-" + item.objectId + "'/></a>";
-
     return res + "</section>";
 }
 
@@ -85,8 +76,6 @@ $.ajaxSetup({
         "X-Parse-REST-API-Key": "gxnzM4rj26M52zGI5Xl7IjLDYssIl8yhcOg9h05r"
     }
 });
-
-getBackground();
 
 function getEvents(order){
     $('#loader-gif').fadeIn();
@@ -130,25 +119,6 @@ function addNewEvent(){
     });
 }
 
-function pickColor(id){
-    $("#colorPick-" + id).click();
-    $("#colorPick-" + id).on('change', function(){
-        $.ajax({
-            method: 'PUT',
-            url: 'https://api.parse.com/1/classes/Event/' + id,
-            data: JSON.stringify(
-                {
-                    'color':$("#colorPick-" + id).val()
-                }
-            ),
-            contentType: "application/json",
-            success: getEvents,
-            error: databaseError
-        });
-    });
-
-}
-
 function showEvents(data){
     $('#events').html("");
 
@@ -176,6 +146,8 @@ function showEvents(data){
     $("#newContent").on('mouseenter', function() {
         this.style.height = "190px";
     });
+
+    switchThemes();
 }
 
 function editEvent(id){
