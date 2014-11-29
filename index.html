@@ -9,9 +9,9 @@
     <body>
         <header>
             <ul>
-                <li><a href="javascript:getEvents('-createdAt')">Newest</a></li>
+                <li><a href="javascript:getEvents('-createdAt')">All</a></li>
                 <li><a href="javascript:getEvents('-updatedAt,-createdAt')">Updated</a></li>
-                <li><a href="javascript:getEvents('-important,-createdAt')">Important</a></li>
+                <li><a href="javascript:filterEvents('{important=true}')">Important</a></li>
                 <li><a href="javascript:getEvents('createdAt')">Oldest</a></li>
             </ul>
         </header>

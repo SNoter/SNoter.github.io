@@ -87,6 +87,16 @@ function getEvents(order){
     });
 }
 
+function filterEvents(){
+    $('#loader-gif').fadeIn();
+    $.ajax({
+        method: "GET",
+        url: encodeURI("https://api.parse.com/1/classes/Event?where={\"important\":true}"),
+        success: showEvents,
+        error: databaseError
+    });
+}
+
 function addNewEvent(){
 
     $('#loader-gif').fadeIn();
