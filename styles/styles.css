@@ -150,6 +150,10 @@ body{
         cursor: pointer;
         width: 100%;
     }
+    
+    #newContent{
+        width:95% !important;
+    }
 }
 
 
