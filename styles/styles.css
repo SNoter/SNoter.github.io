@@ -142,6 +142,10 @@ body{
     #wrapper{
         width: 95% !important;
     }
+	
+	.events, #newContent, #newTitle{
+		border-radius: 0px;
+	}
 }
 
 @media (max-width: 950px) {
