@@ -230,6 +230,14 @@ function showEvents(data){
         this.style.height = "190px";
     });
 
+    $(".event").on("click", function(){
+        $(this).css("max-height", "500px");
+    })
+
+    $(".event").on("mouseleave", function(){
+        $(this).css("max-height", "55px");
+    })
+
     switchThemes();
 }
 

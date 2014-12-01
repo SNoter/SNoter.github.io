@@ -9,6 +9,10 @@
     vertical-align:middle;
 }
 
+html {
+    overflow-y: scroll;
+}
+
 body{
     background-color: #D5D5D5;
 }
@@ -22,7 +26,6 @@ body{
     width: 100%;
     display: none;
 }
-
 
 #wrapper > #events > .event{
     width: 100%;
@@ -41,11 +44,11 @@ body{
     transition: all 0.4s;
 }
 
-#wrapper > #events > .event:hover{
+/*#wrapper > #events > .event:activeasd{
     max-height: 500px;
     cursor: pointer;
     border-radius: 0px;
-}
+}*/
 
 #wrapper > #events .title{
     color:#61A516;
