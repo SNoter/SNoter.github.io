@@ -143,8 +143,8 @@ body{
         width: 95% !important;
     }
 	
-	.events, #newContent, #newTitle{
-		border-radius: 0px;
+	.event, #newContent, #newTitle{
+		border-radius: 0 !important;
 	}
 }
 
@@ -208,6 +208,60 @@ header > ul > li > a{
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+#logIn{
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.59);
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 20px;
+}
+
+#logIn > div{
+    width: 300px;
+    text-align: left;
+    margin: 0px auto;
+    margin-top: 10%;
+    padding: 15px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px #aaa;
+}
+
+#logIn > div > input{
+    width: 100%;
+    height: 30px;
+    margin-bottom: 15px;
+}
+
+.close{
+    float: right;
+    color: red;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#logInButton{
+    float: right;
+    margin-top: 20px;
+    margin-left: 135px;
+    position: absolute;
+    border-radius: 0;
+}
 
 
 

@@ -79,9 +79,18 @@ $.ajaxSetup({
 });
 
 function logUserIn(){
-    var username = prompt("Enter username");
-    var password = prompt("Enter password");
-    logIn(username, password);
+
+    $("#logIn").fadeIn();
+
+    $(".close").on("click", function(){
+        $("#logIn").fadeOut();
+    });
+
+    $("#logInButton").on("click", function(){
+        var username = $("#username").val();
+        var password = $("#password").val();
+        logIn(username, password);
+    });
 }
 
 function logOut(){
@@ -104,7 +113,7 @@ function logIn(username, pass){
             document.cookie = "sessionToken=" + data.sessionToken;
             localStorage.setItem("loggedUserId", data.objectId);
             localStorage.setItem("loggedUserUsername", data.username);
-
+            $("#logIn").fadeOut();
 
             $.ajaxSetup({
                 headers: {
@@ -114,7 +123,6 @@ function logIn(username, pass){
                 }
             });
             $("#logInBtn").text(data.username);
-            alert("Successfully logged in.");
         },
         error: function(err){
             alert("Invalid login credentials.");
