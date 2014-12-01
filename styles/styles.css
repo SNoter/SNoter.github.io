@@ -44,7 +44,6 @@ body{
 #wrapper > #events > .event:hover{
     max-height: 500px;
     cursor: pointer;
-    width: 115%;
     border-radius: 0px;
 }
 
