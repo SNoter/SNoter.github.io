@@ -73,9 +73,67 @@ function eventTemplate(item){
 $.ajaxSetup({
     headers: {
         "X-Parse-Application-Id": "PtzDrKxtdGLm82CmTEFLwb3oJlXz3Hmz8yHeNvWL",
-        "X-Parse-REST-API-Key": "gxnzM4rj26M52zGI5Xl7IjLDYssIl8yhcOg9h05r"
+        "X-Parse-REST-API-Key": "gxnzM4rj26M52zGI5Xl7IjLDYssIl8yhcOg9h05r",
+        "X-Parse-Session-Token": getCookie("sessionToken")
     }
 });
+
+function logUserIn(){
+    var username = prompt("Enter username");
+    var password = prompt("Enter password");
+    logIn(username, password);
+}
+
+function logOut(){
+    document.cookie = "sessionToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+    localStorage.removeItem("sessionToken");
+    localStorage.removeItem("loggedUserUsername");
+    localStorage.removeItem("loggedUserId");
+}
+
+function logIn(username, pass){
+    logOut();
+
+    $.ajax({
+        method: "GET",
+        url: 'https://api.parse.com/1/login?username=' + username + '&password=' + pass,
+        contentType: "application/json",
+        data: null,
+        success: function(data){
+            console.log(JSON.stringify(data));
+            document.cookie = "sessionToken=" + data.sessionToken;
+            localStorage.setItem("loggedUserId", data.objectId);
+            localStorage.setItem("loggedUserUsername", data.username);
+
+
+            $.ajaxSetup({
+                headers: {
+                    "X-Parse-Application-Id": "PtzDrKxtdGLm82CmTEFLwb3oJlXz3Hmz8yHeNvWL",
+                    "X-Parse-REST-API-Key": "gxnzM4rj26M52zGI5Xl7IjLDYssIl8yhcOg9h05r",
+                    "X-Parse-Session-Token": getCookie("sessionToken")
+                }
+            });
+            $("#logInBtn").text(data.username);
+            alert("Successfully logged in.");
+        },
+        error: function(err){
+            alert("Invalid login credentials.");
+            $("#logInBtn").text("Log in");
+            console.log(err);
+        }
+    });
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) != -1) return c.substring(name.length,c.length);
+    }
+    return "";
+}
 
 function getEvents(order){
     $('#loader-gif').fadeIn();
@@ -85,6 +143,13 @@ function getEvents(order){
         success: showEvents,
         error: databaseError
     });
+
+    if (typeof localStorage.getItem('loggedUserId') != 'object'){
+        $("#logInBtn").text(localStorage.getItem('loggedUserUsername'));
+        console.log(localStorage.getItem('loggedUserUsername'))
+    } else {
+        $("#logInBtn").text("log in");
+    }
 }
 
 function filterEvents(){
@@ -210,7 +275,11 @@ function deleteEvent(id){
 }
 
 function databaseError(err){
-    alert('Database connection error');
+    if (err.status  == 403){
+        alert("You don't have the permissions to create/edit/delete a note");
+    } else {
+        alert('Database connection error');
+    }
     console.log(err);
 }
 
