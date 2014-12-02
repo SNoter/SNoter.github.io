@@ -33,6 +33,13 @@ $("#newFormContent, #newFormTitle, #isNoteImportant, #addNewNote label").on("cli
     e.stopPropagation();
 });
 
+$("body").on('click', function(){
+    $(".event").css("max-height", "55px");
+    if ($('body').innerWidth() > 1155)
+        $(".event").css("width", "100%").css("margin-left", "0px");
+});
+
+
 function switchThemes(){
     if (localStorage.getItem("theme") == 'dark'){
         loadDarkTheme();
@@ -235,7 +242,8 @@ function showEvents(data){
         this.style.height = "190px";
     });
 
-    $(".event").on("click", function(){
+    $(".event").on("click", function(e){
+        e.stopPropagation();
         if($(this).css("max-height") == "500px"){
             $(this).css("max-height", "55px");
             if ($('body').innerWidth() > 1155)
