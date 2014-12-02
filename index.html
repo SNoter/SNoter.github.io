@@ -18,10 +18,7 @@
         <div id="wrapper">
             <div id="events"></div>
             <div id="controls">
-                <input type="text" id="newTitle" placeholder="Title"/>
-                <textarea id="newContent" placeholder="Content"></textarea>
-                <button id="newEvent" class="button">Add new note</button>
-                <button id="toggleEditBtn" class="button">Toggle edit</button>
+                <button id="newEvent" class="button" style="float: right">Add new note</button>
                 <img src="ajax-loader.gif" id="loader-gif"/>
             </div>
         </div>
@@ -38,6 +35,15 @@
                 <span class="productPrice label">Password:<span class="required">*</span></span>
                 <input type="password" id="password"/>
                 <button class="button" id="logInButton">Log In</button>
+            </div>
+        </div>
+
+        <div id="addNewNote" style="display: none">
+            <div id="form">
+                <input type="text" placeholder="Note title" id="newFormTitle"/>
+                <textarea id="newFormContent" placeholder="Note content"></textarea>
+                <button id="newFormAddButton" class="button">Add note</button>
+                <input type="checkbox" id="isNoteImportant" /> <label for="isNoteImportant">Important</label>
             </div>
         </div>
 

@@ -1,4 +1,11 @@
-$('#newEvent').on('click', addNewEvent);
+$('#newEvent').on('click', function(){
+    $("#addNewNote").fadeIn();
+});
+
+$('#newFormAddButton').on('click', function(e){
+    e.stopPropagation();
+    addNewEvent();
+});
 
 $('#toggleEditBtn').on('click', function(){
     if ($('section a').css('display') == 'none'){
@@ -16,6 +23,14 @@ $("#changeThemeBtn").on("click", function(){
         localStorage.setItem("theme", "dark");
         switchThemes();
     }
+});
+
+$("#addNewNote").on("click", function(){
+    $(this).fadeOut();
+});
+
+$("#newFormContent, #newFormTitle, #isNoteImportant, #addNewNote label").on("click", function(e){
+    e.stopPropagation();
 });
 
 function switchThemes(){
@@ -49,7 +64,6 @@ function loadDarkTheme(){
     $("#newEvent").css("background", "#333333").css("box-shadow", "0 1px 2px #000");
     localStorage.setItem("theme", "dark");
 }
-
 
 switchThemes();
 
@@ -144,6 +158,10 @@ function getCookie(cname) {
 }
 
 function getEvents(order){
+    $('#newFormTitle').val("");
+    $('#newFormContent').val("");
+    $("#addNewNote").fadeOut();
+
     $('#loader-gif').fadeIn();
     $.ajax({
         method: "GET",
@@ -164,7 +182,7 @@ function filterEvents(){
     $('#loader-gif').fadeIn();
     $.ajax({
         method: "GET",
-        url: encodeURI("https://api.parse.com/1/classes/Event?where={\"important\":true}"),
+        url: encodeURI("https://api.parse.com/1/classes/Event?where={\"important\":true}&order=-createdAt"),
         success: showEvents,
         error: databaseError
     });
@@ -173,11 +191,9 @@ function filterEvents(){
 function addNewEvent(){
 
     $('#loader-gif').fadeIn();
-    var title = $('#newTitle').val();
-    var content = $('#newContent').val();
-
-    $('#newTitle').val("");
-    $('#newContent').val("");
+    var title = $('#newFormTitle').val();
+    var content = $('#newFormContent').val();
+    var important = $('#isNoteImportant').prop("checked")
 
     if (!content || !title){
         alert('No valid data');
@@ -192,8 +208,7 @@ function addNewEvent(){
             {
                 'title': title,
                 'content': content,
-                'important':false,
-                'color':"#FFFFFF"
+                'important':important
             }
         ),
         success: getEvents,
@@ -294,6 +309,7 @@ function databaseError(err){
         alert('Database connection error');
     }
     console.log(err);
+    $('#loader-gif').fadeOut();
 }
 
 

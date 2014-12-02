@@ -44,12 +44,6 @@ body{
     transition: all 0.4s;
 }
 
-/*#wrapper > #events > .event:activeasd{
-    max-height: 500px;
-    cursor: pointer;
-    border-radius: 0px;
-}*/
-
 #wrapper > #events .title{
     color:#61A516;
     display: inline-block;
@@ -66,37 +60,6 @@ body{
     margin-top: 15px;
     font-size: 15px;
     color: gray;
-}
-
-#newTitle{
-    margin-top: 10px;
-    display: block;
-    height: 30px;
-    width:300px;
-    border:0;
-    font-size:1.2rem;
-    padding:.75rem 1rem;
-    border-radius:3px;
-    box-shadow:0 1px 2px #aaa;
-}
-
-#newContent{
-    margin-top: 10px;
-    display: block;
-    height: 190px;
-    width: 420px;
-    border:0;
-    font-size:1.2rem;
-    padding:.75rem 1rem;
-    border-radius:3px;
-    box-shadow:0 1px 2px #aaa;
-}
-
-#newColor{
-    width: 100px;
-    display: block;
-    height: 30px;
-    margin-top: 10px;
 }
 
 #loader-gif{
@@ -150,6 +113,12 @@ body{
 	}
 }
 
+@media (max-width: 730px) {
+    #addNewNote > #form{
+        width: 95% !important;
+    }
+}
+
 @media (max-width: 950px) {
     #wrapper > #events > .event:hover{
         max-height: 500px;
@@ -161,7 +130,6 @@ body{
         width:100% !important;
     }
 }
-
 
 #pageOptions{
     position: absolute;
@@ -210,19 +178,6 @@ header > ul > li > a{
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 #logIn{
     width: 100%;
     height: 100%;
@@ -266,4 +221,56 @@ header > ul > li > a{
 }
 
 
+#addNewNote{
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.59);
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 20px;
+}
 
+#addNewNote > #form{
+    width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #D5D5D5;
+    margin-top: 20px;
+    border-radius: 3px;
+}
+
+#addNewNote > #form > textarea, #form > input:not([type='checkbox']){
+    width: 100%;
+    padding: 5px;
+    display: block;
+    font-size: 18px;
+    border: none;
+    box-shadow: 0 1px 2px #aaa;
+}
+
+#form > input{
+    margin-bottom: 10px;
+}
+
+#form > textarea{
+    margin-bottom: 30px;
+    height: 300px;
+}
+
+#form > button{
+    float: right;
+    margin-top: -20px;
+    border-radius: 0px;
+}
+
+#isNoteImportant{
+    zoom: 1.5;
+    margin-top: -20px;
+    display: inline-block;
+}
+
+#form > label{
+    display: inline-block;
+    margin-top: -47px;
+}
