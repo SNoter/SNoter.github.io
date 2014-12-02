@@ -62,7 +62,7 @@ body{
 }
 
 #wrapper > #events a{
-    display: none;
+    display: inline-block;
     margin-top: 15px;
     font-size: 15px;
     color: gray;

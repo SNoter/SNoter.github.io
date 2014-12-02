@@ -57,7 +57,7 @@ function eventTemplate(item){
     res = "" +
         "<section id='" + item.objectId +"' class='event''>" +
         "<h3 class='title'>" +  item.title + "</h3>" +
-        "<textarea class='eventContent' id='content" + item.objectId + "'>" + item.content + "</textarea>" +
+        "<textarea spellcheck='false' class='eventContent' id='content" + item.objectId + "'>" + item.content + "</textarea>" +
         "<a href=\"javascript:editEvent('" + item.objectId + "');\">Save</a> " +
         "<a href=\"javascript:deleteEvent('" + item.objectId + "');\">Delete</a> ";
 
@@ -207,23 +207,13 @@ function showEvents(data){
 
     data.results.forEach(function(item){
         $('#events').append(eventTemplate(item));
-        $('#content' + item.objectId).on("click", function(){
-            $('#toggleEditBtn').click();
-        });
-        $('#content' + item.objectId).parent().on("mouseleave", function(){
-            if ($('a').css('display') != 'none')
-                $('#toggleEditBtn').click();
-            $('#content' + item.objectId).blur();
-        });
-
     });
+
     $('#events').fadeIn(700);
     $('#loader-gif').fadeOut();
 
-
-    $("textarea").on('mouseenter', function(){
-        this.style.height = "1px";
-        this.style.height = (25+this.scrollHeight)+"px";
+    $("textarea").on("click", function(){
+        return false;
     });
 
     $("#newContent").on('mouseenter', function() {
@@ -231,12 +221,19 @@ function showEvents(data){
     });
 
     $(".event").on("click", function(){
-        $(this).css("max-height", "500px");
-    })
+        if($(this).css("max-height") == "500px"){
+            $(this).css("max-height", "55px");
+            if ($('body').innerWidth() > 1155)
+                $(this).css("width", "100%").css("margin-left", "0px");
+        } else{
+            $(this).css("max-height", "500px");
+            $(this).find("textarea").css("height", "1px");
+            $(this).find("textarea").css("height", (25+($(this).find("textarea").prop('scrollHeight')))+"px");
 
-    $(".event").on("mouseleave", function(){
-        $(this).css("max-height", "55px");
-    })
+            if ($('body').innerWidth() > 1155)
+                $(this).css("width", "151%").css("margin-left", "-150px");
+        }
+    });
 
     switchThemes();
 }
