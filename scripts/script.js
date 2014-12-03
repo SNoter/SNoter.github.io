@@ -78,15 +78,25 @@ function eventTemplate(item){
     res = "" +
         "<section id='" + item.objectId +"' class='event''>" +
         "<h3 class='title'>" +  item.title + "</h3>" +
-        "<textarea spellcheck='false' class='eventContent' id='content" + item.objectId + "'>" + item.content + "</textarea>" +
-        "<a href=\"javascript:editEvent('" + item.objectId + "');\">Save</a> " +
-        "<a href=\"javascript:deleteEvent('" + item.objectId + "');\">Delete</a> ";
+        "<textarea spellcheck='false' class='eventContent' id='content" + item.objectId + "'>" + item.content + "</textarea>";
 
-        if (item.important){
-            res +="<a href=\"javascript:toggleImportant('" + item.objectId + "', false);\">Mark as Normal</a>";
-        }else {
-            res +="<a href=\"javascript:toggleImportant('" + item.objectId + "', true);\">Mark as Important</a>";
-        }
+    if(typeof item.image != "undefined" && item.image != "+")
+        res +="<img src='" + item.image + "' style='width:100%; height:auto'/>";
+
+
+    res += "<a href=\"javascript:editEvent('" + item.objectId + "');\">Save</a> " +  "<a href=\"javascript:deleteEvent('" + item.objectId + "');\">Delete</a> ";
+
+    if(typeof item.image == "string" && item.image != "+"){
+        res+= "<a href=\"javascript:removeImage('" + item.objectId + "');\">Remove image</a> ";
+    } else {
+        res+= "<a href=\"javascript:addImage('" + item.objectId + "');\">Add image</a> ";
+    }
+
+    if (item.important){
+        res +="<a href=\"javascript:toggleImportant('" + item.objectId + "', false);\">Mark as Normal</a>";
+    }else {
+        res +="<a href=\"javascript:toggleImportant('" + item.objectId + "', true);\">Mark as Important</a>";
+    }
 
     return res + "</section>";
 }
@@ -98,6 +108,37 @@ $.ajaxSetup({
         "X-Parse-Session-Token": getCookie("sessionToken")
     }
 });
+
+function addImage(id){
+    var image = prompt("Enter URL for the image:")
+    $.ajax({
+        method: 'PUT',
+        url: 'https://api.parse.com/1/classes/Event/' + id,
+        data: JSON.stringify(
+            {
+                'image':image
+            }
+        ),
+        contentType: "application/json",
+        success: getEvents,
+        error: databaseError
+    });
+}
+
+function removeImage(id){
+    $.ajax({
+        method: 'PUT',
+        url: 'https://api.parse.com/1/classes/Event/' + id,
+        data: JSON.stringify(
+            {
+                "image":"+"
+            }
+        ),
+        contentType: "application/json",
+        success: getEvents,
+        error: databaseError
+    });
+}
 
 function logUserIn(){
 
@@ -244,12 +285,12 @@ function showEvents(data){
 
     $(".event").on("click", function(e){
         e.stopPropagation();
-        if($(this).css("max-height") == "500px"){
+        if($(this).css("max-height") == "5000px"){
             $(this).css("max-height", "55px");
             if ($('body').innerWidth() > 1155)
                 $(this).css("width", "100%").css("margin-left", "0px");
         } else{
-            $(this).css("max-height", "500px");
+            $(this).css("max-height", "5000px");
             $(this).find("textarea").css("height", "1px");
             $(this).find("textarea").css("height", (25+($(this).find("textarea").prop('scrollHeight')))+"px");
 
@@ -319,6 +360,73 @@ function databaseError(err){
     console.log(err);
     $('#loader-gif').fadeOut();
 }
+
+
+/*var file;
+
+$('#fileselect').bind("change", function(e) {
+    var files = e.target.files || e.dataTransfer.files;
+    file = files[0];
+});
+
+// This function is called when the user clicks on Upload to Parse. It will create the REST API request to upload this image to Parse.
+$('#uploadbutton').click(function() {
+    uploadImage(id)
+});
+
+function uploadImage(id){
+    var serverUrl = 'https://api.parse.com/1/files/' + file.name;
+
+    $.ajax({
+        type: "POST",
+        beforeSend: function(request) {
+            request.setRequestHeader("Content-Type", file.type);
+        },
+        url: serverUrl,
+        data: file,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+            addImageToEvent(data.name, id);
+            console.log(data);
+        },
+        error: databaseError
+    });
+}
+
+function addImageToEvent(imageUrl, id){
+    $.ajax({
+        method: 'PUT',
+        url: 'https://api.parse.com/1/classes/Event/' + id,
+        data: JSON.stringify(
+            {
+                'picture':{
+                    "__type":"File",
+                    "name":imageUrl
+                }
+            }
+        ),
+        contentType: "application/json",
+        success: getEvents,
+        error: databaseError
+    });
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
